@@ -12,15 +12,12 @@ DB_URI = os.getenv(
 
 engine = create_engine(DB_URI, pool_pre_ping=True, pool_recycle=1800, future=True)
 
-
-@app.route("/")
+@app.get("/")
 def index():
-    return render_template('./index.html')
-
+    return "Flask is alive", 200
 
 @app.get("/pingdb")
 def pingdb():
     with engine.connect() as conn:
         result = conn.execute(text("SELECT NOW()")).scalar_one()
         return {"db_time": str(result)}
-
